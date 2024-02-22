@@ -3,9 +3,7 @@ import Bulten from "@/components/Bulten";
 import Coupon from "@/components/Coupon";
 
 export default async function Home() {
-  const response = await getBets();
-
-  const data = response.slice(0, 10);
+  const data = await getBets();
 
   return (
     <main>

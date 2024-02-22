@@ -2,6 +2,13 @@
 import React, { FC } from "react";
 import { useMatchContext } from "@/core/context/match/matchContext";
 import OddCell from "@/components/Bulten/OddCell";
+import { useSearchParams } from "next/navigation";
+import Pagination from "@/components/Pagination";
+import { mapBetData } from "@/core/requests/bets";
+import { calculateMBS } from "@/core/utils/calculateMBS";
+import { BetEvent } from "@/core/type/betEvent";
+import TitleCell from "@/components/Bulten/TitleCell";
+import TableCell from "@/components/Bulten/TableCell";
 
 interface Props {
   data: BetEvent[];
@@ -10,119 +17,143 @@ interface Props {
 const Bulten: FC<Props> = ({ data }) => {
   const { couponData } = useMatchContext();
 
+  const searchParams = useSearchParams();
+
+  const page = searchParams.get("page");
+
+  const mappedData = mapBetData(data, {
+    page: page ? Number(page) : 1,
+    perPage: 20,
+  });
+
   return (
     <section className={"overflow-auto"}>
-      <table className={"bulten-table min-w-full text-center"}>
+      <table
+        className={
+          "bulten-table min-w-full text-center mb-4 table table-auto border-collapse"
+        }
+      >
         <thead className={"bg-blue-500 text-amber-50 sticky top-0"}>
           <tr className={"border-blue-500"}>
-            <th className={"border py-3 px-4"}>Event Count: {data.length}</th>
-            <th className={"border py-3 px-4"}>Yorumlar</th>
-            <th className={"border py-3 px-4"}></th>
-            <th className={"border py-3 px-4"}>1</th>
-            <th className={"border py-3 px-4"}>x</th>
-            <th className={"border py-3 px-4"}>2</th>
-            <th className={"border py-3 px-4"}>Alt</th>
-            <th className={"border py-3 px-4"}>Üst</th>
-            <th className={"border py-3 px-4"}>H1</th>
-            <th className={"border py-3 px-4"}>1</th>
-            <th className={"border py-3 px-4"}>x</th>
-            <th className={"border py-3 px-4"}>2</th>
-            <th className={"border py-3 px-4"}>H2</th>
-            <th className={"border py-3 px-4"}>1-X</th>
-            <th className={"border py-3 px-4"}>1-2</th>
-            <th className={"border py-3 px-4"}>X-2</th>
-            <th className={"border py-3 px-4"}>Var</th>
-            <th className={"border py-3 px-4"}>Yok</th>
-            <th className={"border py-3 px-4"}>99</th>
+            <TitleCell className={"min-w-60"}>
+              Event Count: {data.length}
+            </TitleCell>
+            <TitleCell>Yorumlar</TitleCell>
+            <TitleCell></TitleCell>
+            <TitleCell>1</TitleCell>
+            <TitleCell>x</TitleCell>
+            <TitleCell>2</TitleCell>
+            <TitleCell>Alt</TitleCell>
+            <TitleCell>Üst</TitleCell>
+            <TitleCell>H1</TitleCell>
+            <TitleCell>1</TitleCell>
+            <TitleCell>x</TitleCell>
+            <TitleCell>2</TitleCell>
+            <TitleCell>H2</TitleCell>
+            <TitleCell>1-X</TitleCell>
+            <TitleCell>1-2</TitleCell>
+            <TitleCell>X-2</TitleCell>
+            <TitleCell>Var</TitleCell>
+            <TitleCell>Yok</TitleCell>
+            <TitleCell>99</TitleCell>
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => {
+          {mappedData.map((item) => {
             const selectedMatch = couponData.find(
               (couponItem) => couponItem.NID === item.NID,
             );
             const selectedOdd = selectedMatch ? selectedMatch.odd : undefined;
+
+            const maxMBS = calculateMBS(item);
+
             return (
               <>
-                <tr className={"border"}>
-                  <th className={"border px-2 text-left"}>
+                <tr className={"border"} key={`head-${item.NID}`}>
+                  <TitleCell className={"text-left min-w-60"}>
                     {item.D} {item.DAY} {item.LN}
-                  </th>
-                  <th className={"border px-2"}>Yorumlar</th>
-                  <th className={"border px-2"}></th>
-                  <th className={"border px-2"}>1</th>
-                  <th className={"border px-2"}>x</th>
-                  <th className={"border px-2"}>2</th>
-                  <th className={"border px-2"}>Alt</th>
-                  <th className={"border px-2"}>Üst</th>
-                  <th className={"border px-2"}>H1</th>
-                  <th className={"border px-2"}>1</th>
-                  <th className={"border px-2"}>x</th>
-                  <th className={"border px-2"}>2</th>
-                  <th className={"border px-2"}>H2</th>
-                  <th className={"border px-2"}>1-X</th>
-                  <th className={"border px-2"}>1-2</th>
-                  <th className={"border px-2"}>X-2</th>
-                  <th className={"border px-2"}>Var</th>
-                  <th className={"border px-2"}>Yok</th>
-                  <th className={"border px-2"}>99</th>
+                  </TitleCell>
+                  <TitleCell>Yorumlar</TitleCell>
+                  <TitleCell></TitleCell>
+                  <TitleCell>1</TitleCell>
+                  <TitleCell>x</TitleCell>
+                  <TitleCell>2</TitleCell>
+                  <TitleCell>Alt</TitleCell>
+                  <TitleCell>Üst</TitleCell>
+                  <TitleCell>H1</TitleCell>
+                  <TitleCell>1</TitleCell>
+                  <TitleCell>x</TitleCell>
+                  <TitleCell>2</TitleCell>
+                  <TitleCell>H2</TitleCell>
+                  <TitleCell>1-X</TitleCell>
+                  <TitleCell>1-2</TitleCell>
+                  <TitleCell>X-2</TitleCell>
+                  <TitleCell>Var</TitleCell>
+                  <TitleCell>Yok</TitleCell>
+                  <TitleCell>99</TitleCell>
                 </tr>
-                <tr className={"border"}>
-                  <td className={"border py-3 px-2 text-left"}>
+                <tr className={"border"} key={`body-${item.NID}`}>
+                  <TableCell className={"text-left min-w-60"}>
                     <strong>{item.C}</strong> {item.T} {item.N}
-                  </td>
-                  <td className={"border py-3 px-2"}>Yorumlar</td>
-                  <td className={"border py-3 px-2"}>4</td>
+                  </TableCell>
+                  <TableCell>Yorumlar</TableCell>
+                  <TableCell>{maxMBS}</TableCell>
                   <OddCell
                     match={item}
-                    odd={item.OCG["1"].OC["0"].O}
+                    odds={item.OCG["1"].OC["0"]}
                     selectedOdd={selectedOdd}
                   ></OddCell>
                   <OddCell
                     match={item}
-                    odd={item.OCG["1"].OC["1"].O}
+                    odds={item.OCG["1"].OC["1"]}
                     selectedOdd={selectedOdd}
                   ></OddCell>
-                  <td className={"border py-3 px-2"}></td>
+                  <TableCell></TableCell>
                   <OddCell
                     match={item}
-                    odd={item.OCG["5"].OC["25"].O}
-                    selectedOdd={selectedOdd}
-                  ></OddCell>
-                  <OddCell
-                    match={item}
-                    odd={item.OCG["5"].OC["26"].O}
-                    selectedOdd={selectedOdd}
-                  ></OddCell>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}></td>
-                  <OddCell
-                    match={item}
-                    odd={item.OCG["2"].OC["3"].O}
+                    odds={item.OCG["5"].OC["25"]}
                     selectedOdd={selectedOdd}
                   ></OddCell>
                   <OddCell
                     match={item}
-                    odd={item.OCG["2"].OC["4"].O}
+                    odds={item.OCG["5"].OC["26"]}
+                    selectedOdd={selectedOdd}
+                  ></OddCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <OddCell
+                    match={item}
+                    odds={item.OCG["2"].OC["3"]}
                     selectedOdd={selectedOdd}
                   ></OddCell>
                   <OddCell
                     match={item}
-                    odd={item.OCG["2"].OC["5"].O}
+                    odds={item.OCG["2"].OC["4"]}
                     selectedOdd={selectedOdd}
                   ></OddCell>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}></td>
-                  <td className={"border py-3 px-2"}>3</td>
+                  <OddCell
+                    match={item}
+                    odds={item.OCG["2"].OC["5"]}
+                    selectedOdd={selectedOdd}
+                  ></OddCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>3</TableCell>
                 </tr>
               </>
             );
           })}
         </tbody>
       </table>
+      <Pagination
+        totalItems={data.length}
+        itemPerPage={20}
+        isLoading={false}
+        page={page ? Number(page) : 1}
+      />
     </section>
   );
 };

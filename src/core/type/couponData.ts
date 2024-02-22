@@ -3,4 +3,5 @@ export interface CouponData {
   odd: string;
   C: string;
   N: string;
+  MBS: string;
 }

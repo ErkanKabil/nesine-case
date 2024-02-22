@@ -1,14 +1,17 @@
 import React, { FC } from "react";
 import { useMatchContext } from "@/core/context/match/matchContext";
+import { BetEvent, Odd } from "@/core/type/betEvent";
 
 interface Props {
   match: BetEvent;
-  odd: string;
+  odds: Odd;
   selectedOdd?: string;
 }
 
-const OddCell: FC<Props> = ({ match, odd, selectedOdd }) => {
-  const isSelected = selectedOdd === odd;
+const OddCell: FC<Props> = ({ match, odds, selectedOdd }) => {
+  const odd = odds.O;
+  const MBS = odds.MBS;
+  const isSelected = selectedOdd ? selectedOdd === odd : false;
   const { couponData, setOdds, clearOdds, replaceOdds } = useMatchContext();
 
   const handleAddOdd = () => {
@@ -20,13 +23,13 @@ const OddCell: FC<Props> = ({ match, odd, selectedOdd }) => {
         clearOdds(match);
       }
     } else {
-      setOdds(match, odd);
+      setOdds(match, odd, MBS);
     }
   };
 
   return (
     <td
-      className={`border py-3 px-2 cursor-pointer ${isSelected ? "bg-blue-500" : ""}`}
+      className={`border py-3 px-2 cursor-pointer ${isSelected ? "bg-blue-500 text-white" : ""}`}
       onClick={handleAddOdd}
     >
       {odd}

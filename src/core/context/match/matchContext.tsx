@@ -1,10 +1,11 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { CouponData } from "@/core/type/couponData";
+import { BetEvent } from "@/core/type/betEvent";
 
 interface MatchContextProps {
   couponData: CouponData[];
-  setOdds: (match: BetEvent, odds: string) => void;
+  setOdds: (match: BetEvent, odds: string, MBS: string) => void;
   clearOdds: (match: BetEvent) => void;
   replaceOdds: (match: BetEvent, odds: string) => void;
 }
@@ -18,7 +19,7 @@ interface MatchProviderProps {
 export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
   const [couponData, setCouponData] = useState<CouponData[]>([]);
 
-  const setOdds = (match: BetEvent, odd: string) => {
+  const setOdds = (match: BetEvent, odd: string, MBS: string) => {
     setCouponData([
       ...couponData,
       {
@@ -26,6 +27,7 @@ export const MatchProvider: React.FC<MatchProviderProps> = ({ children }) => {
         odd,
         C: match.C,
         N: match.N,
+        MBS,
       },
     ]);
   };
