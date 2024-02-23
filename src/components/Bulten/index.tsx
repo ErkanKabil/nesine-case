@@ -1,6 +1,5 @@
 "use client";
 import React, { FC } from "react";
-import { useMatchContext } from "@/core/context/match/matchContext";
 import OddCell from "@/components/Bulten/OddCell";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/Pagination";
@@ -15,8 +14,6 @@ interface Props {
 }
 
 const Bulten: FC<Props> = ({ data }) => {
-  const { couponData } = useMatchContext();
-
   const searchParams = useSearchParams();
 
   const page = searchParams.get("page");
@@ -60,12 +57,9 @@ const Bulten: FC<Props> = ({ data }) => {
         </thead>
         <tbody>
           {mappedData.map((item) => {
-            const selectedMatch = couponData.find(
-              (couponItem) => couponItem.NID === item.NID,
-            );
-            const selectedOdd = selectedMatch ? selectedMatch.odd : undefined;
-
             const maxMBS = calculateMBS(item);
+
+            const selectedOdd = "4.12";
 
             return (
               <>

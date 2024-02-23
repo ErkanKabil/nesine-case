@@ -13,7 +13,6 @@ export default async function Home() {
           <Bulten data={data}></Bulten>
         </Suspense>
       </div>
-      <Coupon></Coupon>
     </main>
   );
 }
