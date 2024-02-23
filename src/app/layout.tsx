@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { MatchProvider } from "@/core/context/match/matchContext";
-import Coupon from "@/components/Coupon";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <MatchProvider>{children}</MatchProvider>
+      </body>
     </html>
   );
 }
